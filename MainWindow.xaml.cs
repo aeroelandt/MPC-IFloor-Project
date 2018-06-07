@@ -272,8 +272,6 @@ namespace MPC_IFloor_Project
             #endregion
 
             DataContext = this;
-
-            //InitializeComponent();
         }
 
         /// <summary>
