@@ -5,6 +5,9 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using WpfAnimatedGif;
 
 namespace MPC_IFloor_Project
 {
@@ -49,6 +52,7 @@ namespace MPC_IFloor_Project
         /// Brush used for drawing hands that are currently tracked as closed
         /// </summary>
         private readonly Brush _handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
+        private readonly Brush _handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
 
         /// <summary>
         /// Constant for clamping Z values of camera space points from being negative
@@ -226,9 +230,7 @@ namespace MPC_IFloor_Project
 
             _kinectSensor.Open();
 
-            StatusText = _kinectSensor.IsAvailable
-                ? Properties.Resources.RunningStatusText
-                : Properties.Resources.NoSensorStatusText;
+            StatusText = Properties.Resources.OpenHands;
 
             #region DrawBody
 
@@ -280,12 +282,35 @@ namespace MPC_IFloor_Project
         /// <param name="handState">state of the hand</param>
         /// <param name="handPosition">position of the hand</param>
         /// <param name="drawingContext">drawing context to draw to</param>
-        private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
+        private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext, string hand)
         {
             switch (handState)
             {
+                case HandState.Open:
+                    drawingContext.DrawEllipse(_handOpenBrush, null, handPosition, HandSize, HandSize);
+                    Image image = new Image
+                    {
+                        Width = 100,
+                        //Name = "X" + handPosition.X
+                    };
+
+                    var bmImage = new BitmapImage();
+                    bmImage.BeginInit();
+                    bmImage.UriSource = new Uri("Images/growingFlower.gif", UriKind.Relative);
+                    bmImage.EndInit();
+                    image.Source = bmImage;
+                    ImageBehavior.SetAnimatedSource(image, bmImage);
+                    ImageBehavior.SetRepeatBehavior(image, new RepeatBehavior(1));
+
+                    flowerCanvas.Children.Add(image);
+                    Canvas.SetTop(image, handPosition.Y * 2.5);
+                    Canvas.SetLeft(image, handPosition.X * 2.5);
+                    break;
                 case HandState.Closed:
                     drawingContext.DrawEllipse(_handClosedBrush, null, handPosition, HandSize, HandSize);
+                    var enume = flowerCanvas.Children.GetEnumerator();
+                    if (enume.MoveNext())
+                        BodyCoords = enume.Current.ToString();
                     break;
             }
         }
@@ -475,7 +500,7 @@ namespace MPC_IFloor_Project
 
                 ProcessBackgroundOld(depthFrame, colorFrame, bodyIndexFrame);
 
-                ProcessBody(bodyFrame, true);
+                ProcessBody(bodyFrame, false);
             }
             finally
             {
@@ -704,8 +729,8 @@ namespace MPC_IFloor_Project
                     if (showSkeleton)
                         DrawBody(joints, jointPoints, dc, drawPen);
 
-                    DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
-                    DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);
+                    DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc, "left");
+                    DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc, "right");
                 }
 
                 // prevent drawing outside of our render area

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MPC_IFloor_Project"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Closing="MainWindow_Closing"
         Title="MainWindow" WindowState="Maximized">
@@ -26,6 +27,7 @@
             <Image Source="Images\Background2.jpg" Stretch="UniformToFill" />
             <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
             <Image Source="{Binding ImageSourceHands}" Stretch="UniformToFill" />
+            <Canvas Name="flowerCanvas"></Canvas>
         </Grid>
         <StatusBar Grid.Row="2" HorizontalAlignment="Stretch" Name="statusBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StatusBarItem Content="{Binding StatusText}" />

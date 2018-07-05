@@ -79,6 +79,33 @@ namespace MPC_IFloor_Project.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Left.
+        /// </summary>
+        internal static string OpenHandLeft {
+            get {
+                return ResourceManager.GetString("OpenHandLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right.
+        /// </summary>
+        internal static string OpenHandRight {
+            get {
+                return ResourceManager.GetString("OpenHandRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open hands:.
+        /// </summary>
+        internal static string OpenHands {
+            get {
+                return ResourceManager.GetString("OpenHands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running.
         /// </summary>
         internal static string RunningStatusText {
