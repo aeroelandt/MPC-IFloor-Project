@@ -699,7 +699,7 @@ namespace MPC_IFloor_Project
                         jointPoints[jointType] = point;
                     }
 
-                    var drawPen = new Pen(Brushes.Red, 6);
+                    var drawPen = new Pen(Brushes.Red, 6); //red for hands
 
                     if (showSkeleton)
                         DrawBody(joints, jointPoints, dc, drawPen);
