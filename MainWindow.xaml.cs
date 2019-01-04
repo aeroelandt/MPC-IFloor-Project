@@ -291,9 +291,9 @@ namespace MPC_IFloor_Project
                     Image image = new Image
                     {
                         Width = 100,
+                        Uid = flowerCanvas.Children.Count.ToString()
                         //Name = "X" + handPosition.X
                     };
-
                     var bmImage = new BitmapImage();
                     bmImage.BeginInit();
                     bmImage.UriSource = new Uri("Images/growingFlower.gif", UriKind.Relative);
@@ -303,14 +303,19 @@ namespace MPC_IFloor_Project
                     ImageBehavior.SetRepeatBehavior(image, new RepeatBehavior(1));
 
                     flowerCanvas.Children.Add(image);
+                    if (flowerCanvas.Children.Count > 20)
+                    {
+                        var element = flowerCanvas.Children[flowerCanvas.Children.Count - 21];
+                        flowerCanvas.Children.Remove(element);
+                    }
                     Canvas.SetTop(image, handPosition.Y * 2.5);
                     Canvas.SetLeft(image, handPosition.X * 2.5);
                     break;
                 case HandState.Closed:
                     drawingContext.DrawEllipse(_handClosedBrush, null, handPosition, HandSize, HandSize);
-                    var enume = flowerCanvas.Children.GetEnumerator();
-                    if (enume.MoveNext())
-                        BodyCoords = enume.Current.ToString();
+                    //var enume = flowerCanvas.Children.GetEnumerator();
+                    //if (enume.MoveNext())
+                    //    BodyCoords = enume.Current.ToString();
                     break;
             }
         }
